@@ -1,0 +1,96 @@
+db.users.insert({
+    name: "oleg",
+    age: "25"
+})
+
+db.users.insertMany([
+    { name: "vasya",age: "28" },
+    { name: "sveta",age: "32" },
+    { name: "dima",age: "26" },
+    { name: "anton",age: "35" },
+    { name: "vika",age: "44" }
+])
+
+db.users.find()
+db.users.find({age: 25})
+db.users.find({age:'25', name: 'olegll'})
+db.users.find({$or:[{name:'vika', age:'32'}]})
+
+db.users.find({age:{$lt:'30'}})
+db.users.find({age:{$lte:'32'}})
+
+db.users.find({age:{$lg:'30'}})
+db.users.find({age:{$lge:'32'}})
+
+db.users.find({age:{$ne:'32'}})
+
+db.users.find().sort({age:1})
+db.users.find().sort({age:1}).limit(2)
+
+db.users.findOne({_id: ObjectId("61e88998c5b2e67c51b56651")})
+
+
+db.users.update(
+    {name: "anton", age: "56"},
+    {
+        $set: {
+            name: "maks",
+            age: "56",
+            sex: "m"
+        }
+    }
+)
+
+db.users.updateMany(
+    {},
+    {
+        $rename: {
+            name: "fullname"
+        }
+    }
+)
+
+db.users.deleteOne({name: "valea"})
+
+db.users.bulkWrite([
+    {
+        insertOne: {
+            document: {fullname: "slava", age: "34"}
+        }
+    },
+    {
+        deleteOne: {
+            filter: {fullname: "maks", age: "56"}
+        }
+    }
+])
+
+db.users.update(
+    {fullname: "slava"},
+    {
+        $set: {
+            posts: [
+                {title: 'javascript', text: 'js top'},
+                {title: 'mongo', text: 'mongo database'}
+            ]
+        }
+    }
+)
+
+db.users.findOne (
+    {fullname: "slava"},
+    {posts:1}
+)
+
+
+db.users.find(
+    {
+        posts: {
+            $elemMatch: {
+                title: 'javascript'
+            }
+        }
+    }
+)
+
+db.users.find({posts: {$exists: true}})
